@@ -35,8 +35,49 @@ Lista* inicializarLista(){
 	return lista;
 }
 
+No* criarNo(int valor){
+	No *novo = (No*) malloc(sizeof(No));
+	if(novo == NULL){
+		printf("ERRO!! Sem memória!");
+		exit(1);
+	}
+	novo->valor = valor;
+	return novo;
+}
+
+void addNoIni(int valor, Lista* lista){
+	No *no = criarNo(valor);
+	no->prox = lista->ini;
+	if(lista->ini == NULL){
+		lista->fim = no;
+	}
+	lista->ini = no;
+	lista->tam++;
+}
+
+void addNoFim(int valor, Lista* lista){
+	No *no = criarNo(valor);
+	lista->fim->prox = no;
+	if(lista->fim == NULL){
+		lista->ini = no;
+	}
+	lista->fim = no;
+	lista->tam++;
+}
+
 int main(){
 	Lista* lista = inicializarLista();
+	addNoIni(13, lista);
+	addNoIni(0, lista);
+	addNoIni(50, lista);
+	addNoIni(10, lista);
+	addNoFim(11, lista);
+	addNoFim(12, lista);
+	addNoFim(11, lista);
+	addNoFim(12, lista);
+	for(int i = 0; i < lista->tam; i++){
+		printf("Item at %d: %d\n", (i+1), getInfoAt(i, lista));
+	}
 	
 	return 0;
 }
