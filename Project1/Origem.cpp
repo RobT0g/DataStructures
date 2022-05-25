@@ -14,7 +14,7 @@ typedef struct lista {
 
 No* getNoAt(int pos, Lista* lista) {
 	if (pos > lista->tam) {
-		printf("Erro o item não está na lista!");
+		printf("Erro o item nao estÃ¡ na lista!");
 	}
 	else {
 		No* item = lista->ini;
@@ -32,7 +32,7 @@ int getInfoAt(int pos, Lista* lista) {
 Lista* inicializarLista() {
 	Lista* lista = (Lista*)malloc(sizeof(Lista));
 	if (lista == NULL) {
-		printf("ERRO!! Sem memória!");
+		printf("ERRO!! Sem memÃ³ria!");
 		exit(1);
 	}
 	lista->ini = lista->fim = NULL;
@@ -43,7 +43,7 @@ Lista* inicializarLista() {
 No* criarNo(int valor) {
 	No* novo = (No*)malloc(sizeof(No));
 	if (novo == NULL) {
-		printf("ERRO!! Sem memória!");
+		printf("ERRO!! Sem memÃ³ria!");
 		exit(1);
 	}
 	novo->valor = valor;
@@ -66,6 +66,7 @@ void addNoFim(int valor, Lista* lista) {
 	}
 	else {
 		No* no = criarNo(valor);
+		no->prox = NULL;
 		lista->fim->prox = no;
 		lista->fim = no;
 		lista->tam++;
@@ -74,40 +75,41 @@ void addNoFim(int valor, Lista* lista) {
 }
 
 void addNoAt(int valor, int pos, Lista* lista) {
-	No* no = criarNo(valor);
+	pos--;
 	if (pos > lista->tam || pos < 0) {
-		printf("ERRO!! Não há essa pos na lista!");
-	}
-	else {
+		printf("ERRO!! Nao hÃ¡ essa pos na lista!");
+	} else if(pos == 0){
+		addNoIni(valor, lista);
+	} else if (pos == lista->tam){
+		addNoFim(valor, lista);
+	} else {
+		No* no = criarNo(valor);
 		No* ant = getNoAt(pos - 1, lista);
-		printf("\n%d - \n", ant->valor);
 		no->prox = ant->prox;
 		ant->prox = no;
 		lista->tam++;
 	}
 }
-/*
+
+void printar(Lista* lista){
+	for(No* no = lista->ini; no != NULL; no = no->prox){
+		printf("> %d\n", no->valor);
+	}
+}
+
 int main() {
 	Lista* lista = inicializarLista();
-	addNoIni(13, lista);
-	addNoIni(0, lista);
-	addNoIni(50, lista);
-	addNoIni(10, lista);
-	addNoFim(11, lista);
-	addNoFim(12, lista);
-	addNoFim(11, lista);
-	addNoFim(12, lista);
-	for (int i = 0; i < lista->tam; i++) {
-		printf("Item at %d: %d\n", (i + 1), getInfoAt(i, lista));
-	}
-	printf("----------------------\n");
-	addNoAt(20, 3, lista);
-	addNoAt(21, 2, lista);
-	addNoAt(20, 7, lista);
-	for (int i = 0; i < lista->tam; i++) {
-		printf("Item at %d: %d\n", (i + 1), getInfoAt(i, lista));
-	}
-
+	addNoIni(13, lista); 	//13
+	addNoIni(0, lista);  	//0, 13
+	addNoIni(50, lista);	//50, 0, 13
+	addNoIni(10, lista);	//10, 50, 0, 13
+	addNoFim(11, lista);	//10, 50, 0, 13, 11
+	addNoFim(12, lista);	//10, 50, 0, 13, 11, 12
+	addNoFim(11, lista);	//10, 50, 0, 13, 11, 12, 11
+	addNoFim(12, lista);	//10, 50, 0, 13, 11, 12, 11, 12
+	addNoAt(20, 3, lista);	//10, 50, 20, 0, 13, 11, 12, 11, 12
+	addNoAt(21, 2, lista);	//10, 21, 50, 20, 0, 13, 11, 12, 11, 12
+	addNoAt(20, 7, lista);  //10, 21, 50, 20, 0, 13, 20, 11, 12, 11, 12
+	printar(lista);
 	return 0;
 }
-*/
