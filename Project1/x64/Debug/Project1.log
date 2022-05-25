@@ -1,0 +1,3 @@
+﻿  Origem.cpp
+D:\Users\robso\Documents\GitHub\DataStructures\Project1\Origem.cpp(26): warning C4715: 'getNoAt': nem todos os caminhos de controle retornam um valor
+  Project1.vcxproj -> D:\Users\robso\Documents\GitHub\DataStructures\x64\Debug\Project1.exe
