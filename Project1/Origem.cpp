@@ -86,7 +86,7 @@ void addNoAt(int valor, int pos, Lista* lista) {
 		lista->tam++;
 	}
 }
-
+/*
 int main() {
 	Lista* lista = inicializarLista();
 	addNoIni(13, lista);
@@ -110,3 +110,4 @@ int main() {
 
 	return 0;
 }
+*/
