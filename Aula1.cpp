@@ -15,13 +15,13 @@ typedef struct lista{
 No* getNoAt(int pos, Lista *lista){
 	if(pos > lista->tam){
 		printf("Erro o item não está na lista!");
-		return 0;
+	} else {
+		No *item = lista->ini;
+		for(int i = 0; i < pos; i++){
+			item = item->prox;
+		}
+		return item;
 	}
-	No *item = lista->ini;
-	for(int i = 0; i < pos; i++){
-		item = item->prox;
-	}
-	return item;
 }
 
 int getInfoAt(int pos, Lista *lista){
@@ -60,13 +60,15 @@ void addNoIni(int valor, Lista* lista){
 }
 
 void addNoFim(int valor, Lista* lista){
-	No *no = criarNo(valor);
-	lista->fim->prox = no;
-	if(lista->fim == NULL){
-		lista->ini = no;
+	if(lista->ini == NULL){
+		addNoIni(valor, lista);
+	} else {
+		No *no = criarNo(valor);
+		lista->fim->prox = no;
+		lista->fim = no;
+		lista->tam++;
 	}
-	lista->fim = no;
-	lista->tam++;
+	
 }
 
 void addNoAt(int valor, int pos, Lista* lista){
