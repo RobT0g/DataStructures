@@ -12,7 +12,7 @@ typedef struct lista{
 	int tam;
 } Lista;
 
-int getInfoAt(int pos, Lista *lista){
+No* getNoAt(int pos, Lista *lista){
 	if(pos > lista->tam){
 		printf("Erro o item não está na lista!");
 		return 0;
@@ -21,7 +21,11 @@ int getInfoAt(int pos, Lista *lista){
 	for(int i = 0; i < pos; i++){
 		item = item->prox;
 	}
-	return item->valor;
+	return item;
+}
+
+int getInfoAt(int pos, Lista *lista){
+	return getNoAt(pos, lista)->valor;
 }
 
 Lista* inicializarLista(){
@@ -65,6 +69,19 @@ void addNoFim(int valor, Lista* lista){
 	lista->tam++;
 }
 
+void addNoAt(int valor, int pos, Lista* lista){
+	No *no = criarNo(valor);
+	if(pos > lista->tam || pos < 0){
+		printf("ERRO!! Não há essa pos na lista!");
+	} else {
+		No* ant = getNoAt(pos-1, lista);
+		printf("\n%d - \n", ant->valor);
+		no->prox = ant->prox;
+		ant->prox = no;
+		lista->tam++;
+	}
+}
+
 int main(){
 	Lista* lista = inicializarLista();
 	addNoIni(13, lista);
@@ -75,6 +92,13 @@ int main(){
 	addNoFim(12, lista);
 	addNoFim(11, lista);
 	addNoFim(12, lista);
+	for(int i = 0; i < lista->tam; i++){
+		printf("Item at %d: %d\n", (i+1), getInfoAt(i, lista));
+	}
+	printf("----------------------\n");
+	addNoAt(20, 3, lista);
+	addNoAt(21, 2, lista);
+	addNoAt(20, 7, lista);
 	for(int i = 0; i < lista->tam; i++){
 		printf("Item at %d: %d\n", (i+1), getInfoAt(i, lista));
 	}
