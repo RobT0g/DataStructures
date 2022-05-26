@@ -51,8 +51,26 @@ No* Lista::iterate(int pos, bool print) {
 	return no;
 }
 
+No* Lista::getFirst() {
+	return this->lista->ini;
+}
+
+No* Lista::getNoAt(int pos) {
+	return this->iterate(pos, false);
+}
+
+int Lista::getAt(int pos) {
+	No* no = this->iterate(pos, false);
+	if (no) {
+		return no->valor;
+	}
+	return 0;
+}
+
 void Lista::printAll() {
+	printf("\n--------------\n");
 	this->iterate(lista->tam, true);
+	printf("--------------\n");
 }
 
 void Lista::insert(int valor) {
@@ -75,5 +93,67 @@ void Lista::push(int valor) {
 		no->prox = NULL;
 		lista->fim = no;
 		lista->tam++;
+	}
+}
+
+void Lista::insertAt(int valor, int pos) {
+	if (this->lista->tam == 0 || pos == 1)
+		this->insert(valor);
+	else if (pos == this->lista->tam+1) {
+		this->push(valor);
+	}
+	else if (pos > 0 && pos <= this->lista->tam) {
+		No* no = this->getNoAt(pos-1);
+		if (no) {
+			No* novo = this->createNo(valor);
+			novo->prox = no->prox;
+			no->prox = novo;
+			this->lista->tam++;
+		}
+	}
+	else {
+		printf("ERRO! Posição inválida!");
+	}
+}
+
+void Lista::removeFirst() {
+	if (this->lista->tam > 0) {
+		No* first = this->lista->ini;
+		this->lista->ini = first->prox;
+		this->lista->tam--;
+		free(first);
+		if (this->lista->tam == 0) {
+			this->lista->fim = NULL;
+		}
+	}
+	
+}
+
+void Lista::removeLast() {
+	if (this->lista->tam < 2)
+		this->removeFirst();
+	else {
+		No* prev = this->iterate(this->lista->tam - 1, false);
+		No* last = prev->prox;
+		prev->prox = NULL;
+		this->lista->fim = prev;
+		this->lista->tam--;
+		free(last);
+	}
+}
+
+void Lista::removeAt(int pos) {
+	if (pos == 1) {
+		this->removeFirst();
+	}
+	else if (pos == this->lista->tam) {
+		this->removeLast();
+	}
+	else if (pos > 1 && pos < this->lista->tam) {
+		No* prev = this->iterate(pos - 1, false);
+		No* cur = prev->prox;
+		prev->prox = cur->prox;
+		this->lista->tam--;
+		free(cur);
 	}
 }

@@ -22,6 +22,9 @@ public:
 	void insert(int valor);
 	void push(int valor);
 	void insertAt(int valor, int pos);
+	void removeFirst();
+	void removeLast();
+	void removeAt(int pos);
 	void printAll();
 	No* getFirst();
 
