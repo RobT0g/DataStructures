@@ -23,10 +23,10 @@ public:
 	void push(int valor);
 	void insertAt(int valor, int pos);
 	void printAll();
+	No* getFirst();
 
 private:
 	List* lista;
-
 	No* createNo(int valor);
 	No* iterate(int pos, bool print);
 	No* getNoAt(int pos);

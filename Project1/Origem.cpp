@@ -97,7 +97,7 @@ void printar(Lista* lista){
 	}
 }
 
-int main() {
+int maina() {
 	Lista* lista = inicializarLista();
 	addNoIni(13, lista); 	//13
 	addNoIni(0, lista);  	//0, 13

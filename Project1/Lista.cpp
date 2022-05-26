@@ -10,94 +10,70 @@ Lista::Lista(void){
 	this->lista->ini = this->lista->fim = NULL;
 	this->lista->tam = 0;
 }
+
 Lista::~Lista(void){
-	No* no = this->lista->ini;
-	No* prox;
-	for (int i = 0; i < this->lista->tam; i++) {
-		prox = no->prox;
-		free(no);
-		no = prox;
+	if (this->lista->tam != 0) {
+		No* cur = this->lista->ini;
+		while (cur) {
+			No* next = cur->prox;
+			free(cur);
+			cur = next;
+		}
+		this->lista->ini = this->lista->fim = NULL;
+		this->lista->tam = 0;
 	}
-	free(this->lista);
+	//free(this->lista);
 }
 
 No* Lista::createNo(int valor) {
-	No* no1 = (No*)malloc(sizeof(No));
-	if (no1 == NULL) {
+	No* no = (No*)malloc(sizeof(No));
+	if (no == NULL) {
 		printf("ERRO! Faltou memória!");
-		return NULL;
+		exit(1);
 	}
-	no1->valor = valor;
-	return no1;
-}
-
-No* Lista::iterate(int pos, bool print) {
-	if (pos > this->lista->tam) {
-		printf("Erro! Posição não existe na lista!");
-		return NULL;
-	}
-	No* no = this->lista->ini;
-	printf("Value at %d: %d;", 0, no->valor);
-	for (int i = 0; i < pos; i++) {
-		no = no->prox;
-		if(print)
-			printf("Value at %d: %d;\n", i+1, no->valor);
-	}
+	no->valor = valor;
+	no->prox = NULL;
 	return no;
 }
 
-No* Lista::getNoAt(int pos) {
-	return this->iterate(pos, false);
-}
-
-int Lista::getAt(int pos){
-	No* no = this->getNoAt(pos);
-	if (no == NULL) {
+No* Lista::iterate(int pos, bool print) {
+	if (this->lista->tam == 0 || pos > this->lista->tam) {
 		return NULL;
 	}
-	return no->valor;
-}
-
-void Lista::insert(int valor){
-	No* no = this->createNo(valor);
-	if (this->lista->ini == NULL) {
-		this->lista->fim = this->lista->ini = no;
+	No* no = lista->ini;
+	for (int i = 1; i < pos; i++) {
+		if (print)
+			printf("Value at %d - %d;\n", i, no->valor);
+		no = no->prox;
 	}
-	else {
-		no->prox = this->lista->ini;
-		this->lista->ini = no;
-	}
-	this->lista->tam++;
-}
-
-void Lista::push(int valor){
-	if (this->lista->ini == NULL) {
-		this->insert(valor);
-	}
-	else {
-		No* no = this->createNo(valor);
-		lista->fim->prox = no;
-		lista->fim = no;
-		this->lista->tam++;
-	}
-}
-
-void Lista::insertAt(int valor, int pos){
-	if (pos == 0) {
-		this->insert(valor);
-	}
-	else if (pos == this->lista->tam) {
-		this->push(valor);
-	}
-	else {
-		No* no = this->createNo(valor);
-		No* prev = this->getNoAt(pos - 1);
-		no->prox = prev->prox;
-		prev->prox = no;
-		this->lista->tam++;
-	}
+	if (print)
+		printf("Value at %d - %d;\n", pos, no->valor);
+	return no;
 }
 
 void Lista::printAll() {
-	this->iterate(this->lista->tam-1, true);
+	this->iterate(lista->tam, true);
+}
+
+void Lista::insert(int valor) {
+	No* no = this->createNo(valor);
+	if (lista->ini == NULL) {
+		lista->ini = lista->fim = no;
+	}else {
+		no->prox = lista->ini;
+		lista->ini = no;
+	}
+	lista->tam++;
+}
+
+void Lista::push(int valor) {
+	if (lista->ini == NULL) {
+		this->insert(valor);
+	}else {
+		No* no = this->createNo(valor);
+		lista->fim->prox = no;
+		no->prox = NULL;
+		lista->fim = no;
+		lista->tam++;
+	}
 }
