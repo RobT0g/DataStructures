@@ -4,7 +4,7 @@
 Lista::Lista(void){
 	this->lista = (List*) malloc(sizeof(Lista));
 	if (this->lista == NULL) {
-		printf("ERRO! Faltou memória!");
+		printf("ERRO! Faltou memÃ³ria!");
 		exit(1);
 	}
 	this->lista->ini = this->lista->fim = NULL;
@@ -28,7 +28,7 @@ Lista::~Lista(void){
 No* Lista::createNo(int valor) {
 	No* no = (No*)malloc(sizeof(No));
 	if (no == NULL) {
-		printf("ERRO! Faltou memória!");
+		printf("ERRO! Faltou memÃ³ria!");
 		exit(1);
 	}
 	no->valor = valor;
@@ -112,7 +112,7 @@ void Lista::insertAt(int valor, int pos) {
 		}
 	}
 	else {
-		printf("ERRO! Posição inválida!");
+		printf("ERRO! PosiÃ§Ã£o invÃ¡lida!");
 	}
 }
 
@@ -156,4 +156,20 @@ void Lista::removeAt(int pos) {
 		this->lista->tam--;
 		free(cur);
 	}
+}
+
+int Lista::getTam(){
+	return this->lista->tam;
+}
+
+int Lista::inlist(int valor){
+	int count = 1;
+	No* no;
+	for(no =  this->lista->ini; no != NULL; no = no->prox){
+		if(no->valor == valor){
+			return count;
+		}
+		count++;
+	}
+	return 0;
 }
