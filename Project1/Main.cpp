@@ -2,7 +2,7 @@
 #include "Lista.h"
 
 int main() {
-	//Lista list = Lista::Lista();
+	Lista list = Lista::Lista();
 	int num, pos, opcao;
 	do{
 		printf("\n---------------------------------------------------\n);
