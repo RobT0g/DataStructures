@@ -27,6 +27,8 @@ public:
 	void removeAt(int pos);
 	void printAll();
 	No* getFirst();
+	int getTam();
+	int inlist(int valor);
 
 private:
 	List* lista;
