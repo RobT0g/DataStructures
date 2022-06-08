@@ -1,73 +1,136 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include "Lista.h"
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.Class07_06;
 
-int main() {
-	Lista list = Lista();
-	int num, pos, opt;
-	do{
-		printf("\n---------------------------------------------------\n");
-		printf("01 - Imprimir Lista;\n");
-		printf("02 - Inserir no inicio;\n");
-		printf("03 - Inserir no meio;\n");
-		printf("04 - Inserir no fim;\n");
-		printf("05 - Remover do inicio;\n");
-		printf("06 - Remover do meio;\n");
-		printf("07 - Remover do fim;\n");
-		printf("08 - Buscar elemento;\n");
-		printf("09 - Tamanho da lista;\n");
-		printf("0 - Finalizar;\n");
-		scanf_s("%d", &opt);
-		switch (opt) {
-			case 1:
-				list.printAll();
-				break;
-			case 2:
-				printf("Insira o valor a ser inserido: ");
-				scanf_s("%d", &num);
-				list.insert(num);
-				break;
-			case 3:
-				printf("Insira o valor a ser inserido: ");
-				scanf_s("%d", &num);
-				printf("Insira a posição§Ã£o na qual será inserido: ");
-				scanf_s("%d", &pos);
-				list.insertAt(num, pos);
-				break;
-			case 4:
-				printf("Insira o valor a ser inserido: ");
-				scanf_s("%d", &num);
-				list.push(num);
-				break;
-			case 5:
-				list.removeFirst();
-				break;
-			case 6:
-				printf("Insira a posição na qual será retirado: ");
-				scanf_s("%d", &pos);
-				list.removeAt(pos);
-				break;
-			case 7:
-				list.removeLast();
-				break;
-			case 8:
-				printf("Insira o valor a ser buscado: ");
-				scanf_s("%d", &num);
-				if(list.inlist(num) != 0)
-					printf("O valor está na lista.\n");
-				else
-					printf("O valor nao esta na lista.\n");
-				break;
-			case 9:
-				printf("O tamanho e %d.", list.getTam());
-				break;
-			case 0:
-				printf("Ok! Finalizamos aqui.");
-				break;
-			default:
-				printf("ERRO! Opção inválida.");
-		}
-	} while(opt != 0);
-	
-	return 0;
+import java.util.Set;
+
+/**
+ *
+ * @author Aluno
+ */
+public class Lista {
+    private Celula ini;
+    private Celula fim;
+    private int tam;
+    
+    public Lista(){
+        this.ini = this.fim = null;
+        this.tam = 0;
+    }
+    
+    public void insert(Object elem){
+       this.ini = new Celula(elem, this.ini);
+       this.tam++;
+       if(this.tam == 1)
+           this.fim = this.ini;
+    }
+    
+    public void push(Object elem){
+        if(this.tam == 0){
+            this.insert(elem);
+        } else {
+            Celula nova = new Celula(elem);
+            this.fim.setProx(nova);
+            this.fim = nova;
+            this.tam++;
+        }
+    }
+    
+    public void insertAt(Object elem, int pos){
+        if(this.tam == 0 && pos == 1){
+            this.insert(elem);
+        } else if(pos == this.tam+1){
+            this.push(elem);
+        } else{
+        Celula cel = this.getCelAt(pos-1);
+            if(cel != null){
+                Celula nova = new Celula(elem, cel.getProx());
+                cel.setProx(nova);
+                this.tam++;
+            }
+        }
+    }
+    
+    private Celula getCelAt(int pos){
+        return this.iterate(pos, false);
+    }
+
+    private Celula iterate(int pos, boolean print){
+        if(!this.occupied(pos) || this.tam == 0){
+            return null;
+        }
+        Celula cur = this.ini;
+        if(print) System.out.println(cur.getElem());
+        for(int i = 1; i < pos; i++){
+            cur = cur.getProx();
+            if(cur == null) break;
+            if(print) System.out.println(cur.getElem());
+        }
+        return cur;
+    }
+    
+    public void printAll(){
+        this.iterate(this.tam, true);
+    }
+
+    @Override
+    public String toString(){
+        if(this.tam == 0)
+            return "[]";
+        Celula cur = this.ini;
+        String txt = "[" + cur.getElem();
+        for(int i = 1; i < this.tam; i++){
+            cur = cur.getProx();
+            txt += ", " + cur.getElem();
+        }
+        return txt + "]";
+    }
+    
+    private boolean occupied(int pos){
+        return pos > 0 && pos <= this.tam;
+    }
+
+    public void removeFirst(){
+        if(this.tam == 1)
+            this.fim = null;
+        else if(this.tam > 1){
+            this.ini = this.ini.getProx();
+            this.tam--;
+        }
+    }
+    
+    public void removeLast(){
+        if(this.tam <= 1){
+            this.removeFirst();
+        } else {
+            Celula ant = this.getCelAt(this.tam-1);
+            ant.setProx(null);
+            this.tam--;
+        }
+    }
+
+    public void removeAt(int pos){
+        if(pos == 1){
+            this.removeFirst();
+        } else if(pos == this.tam){
+            this.removeLast();
+        } else {
+            Celula ant = this.getCelAt(pos-1);
+            if(ant != null){
+                ant.setProx(ant.getProx().getProx());
+                this.tam--;
+            }
+        }
+    }
+    
+    public boolean includes(Object elem){
+        Celula cur = this.ini;
+        for(int i = 0; i <= this.tam; i++){
+            if(cur.getElem() == elem) return true;
+            cur = cur.getProx();
+        }
+        return false;
+    }
 }
