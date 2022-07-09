@@ -42,12 +42,15 @@ No* Lista::iterate(int pos, bool print) {
 	}
 	No* no = lista->ini;
 	for (int i = 1; i < pos; i++) {
-		if (print)
-			printf("Value at %d - %d;\n", i, no->valor);
+		if (print) {
+			printf("%d", no->valor);
+			if (no->prox != NULL)
+				printf(" -> ");
+		}
 		no = no->prox;
 	}
 	if (print)
-		printf("Value at %d - %d;\n", pos, no->valor);
+		printf("%d", no->valor);
 	return no;
 }
 
